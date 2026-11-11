@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ishika's Algo Buddies · Watch It Work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;700;800&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2D2433;--cream:#FFF8EE;--pink:#FF9DB8;--mint:#8EDDB9;--lav:#B9A5FF;--butter:#FFD966;--sky:#8CCBFF;--peach:#FFB894;
+--head:'Fredoka','Trebuchet MS',system-ui,sans-serif;--body:'Nunito',system-ui,sans-serif;--mono:'Fira Code',ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--body);color:var(--ink);background:var(--cream);background-image:radial-gradient(#F3DFC8 1.2px,transparent 1.2px);background-size:18px 18px;font-weight:500}
+header{display:flex;align-items:center;gap:12px;max-width:980px;margin:0 auto;padding:14px 16px 4px}
+header svg{width:74px;height:auto;flex:none}
+header h1{font-family:var(--head);font-size:clamp(20px,5vw,30px);margin:0;line-height:1.1}
+header h1 span{background:linear-gradient(transparent 60%,var(--butter) 60%)}
+header p{margin:4px 0 0;font-size:14px;font-weight:700;color:#6B5B73}
+main{max-width:980px;margin:0 auto;padding:8px 16px 40px}
+nav{display:flex;flex-direction:column;gap:6px;margin:8px 0 14px}
+.grp{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.grp b{font-family:var(--head);font-size:13px;min-width:92px}
+.chipb{font-family:var(--head);font-weight:600;font-size:13px;border:2px solid var(--ink);background:#fff;border-radius:99px;padding:4px 11px;cursor:pointer;color:var(--ink);box-shadow:2px 2px 0 var(--ink)}
+.chipb:hover{transform:translate(-1px,-1px)}
+.chipb.on{background:var(--pink);box-shadow:none;transform:translate(2px,2px)}
+.card{background:#fff;border:3px solid var(--ink);border-radius:22px;box-shadow:6px 6px 0 var(--pink);padding:14px 16px 16px}
+.card h2{font-family:var(--head);font-size:clamp(19px,4.6vw,26px);margin:0 0 2px}
+#blurb{margin:0 0 8px;font-size:14.5px;color:#4a3f52;font-weight:700}
+#legend{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}
+.lg{font-size:12px;font-weight:800;border:1.6px solid var(--ink);border-radius:99px;padding:1px 9px}
+#stage{min-height:250px;border:2px dashed var(--ink);border-radius:16px;background:#FFFDF8;padding:14px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;overflow-x:auto}
+#cap{margin:10px 0;min-height:58px;background:#FFF1F5;border:2px solid var(--ink);border-radius:14px;padding:9px 12px;font-size:15.5px;font-weight:700;line-height:1.35}
+#cap code,.extra code{font-family:var(--mono);background:#fff;border:1px solid #e5d6dc;border-radius:5px;padding:0 4px;font-size:.9em}
+.ctrl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{font-family:var(--head);font-weight:600;font-size:15px;border:2.5px solid var(--ink);background:var(--butter);border-radius:12px;padding:7px 13px;cursor:pointer;color:var(--ink);box-shadow:3px 3px 0 var(--ink)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.btn.main{background:var(--mint);min-width:92px}
+.ctrl label{font-size:13px;font-weight:800;display:flex;align-items:center;gap:6px;margin-left:auto}
+#tag{font-family:var(--head);font-size:12.5px;border:2px solid var(--ink);border-radius:99px;padding:1px 9px;background:#fff}
+#count{font-family:var(--head);font-size:14px;min-width:64px;text-align:center}
+.bar{height:8px;border:2px solid var(--ink);border-radius:99px;margin-top:10px;overflow:hidden;background:#fff}
+#prog{height:100%;background:var(--pink);width:0;transition:width .2s}
+footer{max-width:980px;margin:0 auto;padding:0 16px 30px;font-size:13px;font-weight:700;color:#6B5B73;text-align:center}
+footer a{color:#B4234F}
+/* lesson slides */
+.slide{max-width:560px;text-align:center;padding:6px 8px}
+.slide .se{font-size:44px;line-height:1}
+.slide h3{font-family:var(--head);font-size:clamp(19px,5vw,24px);margin:6px 0 6px;color:#B4234F}
+.slide .st{font-size:clamp(15px,4vw,17px);line-height:1.5;font-weight:700;text-align:left}
+.slide .st p{margin:0 0 8px}.slide ul{margin:0;padding-left:20px}.slide li{margin:5px 0}
+.slide code{font-family:var(--mono);background:#FFF1F5;border:1px solid #e5d6dc;border-radius:5px;padding:0 4px;font-size:.9em}
+.slide .qq{background:#FFF6E0;border:2px solid var(--ink);border-radius:12px;padding:8px 12px}
+/* colours for states */
+.cmp{background:#FFE9A0!important}.swap{background:#FFB3C7!important}.done{background:#B5EBD2!important}.key{background:#D3C6FF!important}
+.cur{background:#FFCDB0!important}.seen{background:#BFE1FF!important}.rej{background:#ECE8EE!important;color:#9a909f!important}.dim{opacity:.32}
+/* array */
+.arr{display:flex;gap:clamp(3px,1vw,6px);flex-wrap:nowrap;width:100%;justify-content:center}
+.cellw{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1 1 0;max-width:52px;min-width:0}
+.cell{width:100%;aspect-ratio:1;display:grid;place-items:center;border:2.5px solid var(--ink);border-radius:11px;background:#fff;font-family:var(--head);font-weight:600;font-size:clamp(14px,3.8vw,19px);transition:background .2s,transform .2s}
+.cell.cmp,.cell.swap,.cell.key,.cell.cur{transform:translateY(-6px)}
+.idx{font-size:11px;color:#8a7c92;font-weight:800}
+.ptr{font-family:var(--head);font-size:12px;height:15px;color:#B4234F;white-space:nowrap}
+.extra{font-size:14px;font-weight:700;text-align:center;line-height:1.5}
+.extra b{font-family:var(--head)}
+/* linked list */
+.ll{display:flex;align-items:center;flex-wrap:wrap;gap:4px;justify-content:center}
+.ll .lab{font-family:var(--head);font-size:14px}
+.ll .nd{display:flex;border:2.5px solid var(--ink);border-radius:10px;overflow:hidden;font-family:var(--head);font-weight:600;font-size:17px;background:#fff}
+.ll .nd span{padding:8px 12px}.ll .nd span+span{border-left:2.5px solid var(--ink);background:#f6eef2;padding:8px 8px}
+.ll .ar{font-size:20px;font-weight:800}
+/* stack & queue */
+.sq{display:flex;gap:26px;align-items:flex-end;justify-content:center;flex-wrap:wrap}
+.inp{display:flex;gap:4px}
+.inp .cell{width:34px;height:38px;aspect-ratio:auto;font-family:var(--mono)}
+.stk{display:flex;flex-direction:column-reverse;gap:4px;min-height:150px;width:74px;border:2.5px solid var(--ink);border-top:none;border-radius:0 0 12px 12px;padding:6px;justify-content:flex-start}
+.stk .cell{width:100%;height:32px;aspect-ratio:auto;font-family:var(--mono)}
+.que{display:flex;gap:4px;min-height:48px;min-width:170px;border-top:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);padding:5px;align-items:center}
+.cap2{font-family:var(--head);font-size:13px;text-align:center;margin-top:4px}
+/* calls */
+.calls{display:flex;flex-direction:column-reverse;gap:5px;width:min(100%,430px)}
+.call{border:2.5px solid var(--ink);border-radius:10px;padding:7px 10px;font-family:var(--mono);font-size:clamp(11.5px,3.2vw,14px);background:#fff}
+/* activities */
+.acts{width:min(100%,520px)}
+.actrow{display:flex;align-items:center;gap:8px;margin:5px 0}
+.actrow i{font-style:normal;font-family:var(--mono);font-size:12px;width:48px}
+.track{flex:1;height:24px;position:relative;background:repeating-linear-gradient(90deg,#f1e6ea 0 1px,transparent 1px 10%)}
+.abar{position:absolute;top:0;height:100%;border:2.5px solid var(--ink);border-radius:8px;background:#fff;display:grid;place-items:center;font-size:12px;font-weight:800}
+.axis{display:flex;margin-left:56px;font-size:10px;color:#8a7c92;font-weight:800}.axis span{width:10%}
+/* grid */
+table.g{border-collapse:separate;border-spacing:3px;font-family:var(--head);font-size:clamp(12px,3.3vw,15px)}
+table.g th{font-size:11.5px;font-family:var(--body);font-weight:800;color:#6B5B73;padding:0 4px;white-space:nowrap}
+table.g td{width:clamp(30px,8vw,44px);height:clamp(28px,7.5vw,38px);text-align:center;border:2px solid var(--ink);border-radius:8px;background:#fff}
+/* kmp */
+.kmp{display:flex;flex-direction:column;gap:5px;align-items:flex-start}
+.krow{display:flex;gap:3px}
+.kc{width:clamp(20px,5.6vw,30px);height:clamp(26px,6.5vw,34px);display:grid;place-items:center;border:2px solid var(--ink);border-radius:7px;font-family:var(--mono);font-size:clamp(12px,3.4vw,16px);background:#fff}
+.kc.gap{border-color:transparent;background:transparent}
+.klab{font-size:11px;font-weight:800;color:#8a7c92}
+/* svg */
+svg.g{width:min(100%,460px);height:auto}
+.edge{stroke:var(--ink);stroke-width:2.2}
+.edge.tree{stroke:#1F9D6B;stroke-width:5.5}.edge.cmp{stroke:#F2B600;stroke-width:5.5;background:none!important}.edge.rej{stroke:#cfc6d3;stroke-dasharray:5 5;background:none!important}
+.node circle{fill:#fff;stroke:var(--ink);stroke-width:2.5;transition:fill .2s}
+.node.cmp circle{fill:#FFE9A0}.node.done circle{fill:#B5EBD2}.node.cur circle{fill:#FFCDB0}.node.seen circle{fill:#BFE1FF}.node.key circle{fill:#D3C6FF}
+.node text{font-family:var(--head);font-weight:600;font-size:14px;text-anchor:middle;dominant-baseline:central;fill:var(--ink)}
+.nlab{font-family:var(--head);font-weight:700;font-size:13px;text-anchor:middle;fill:#B4234F}
+.wt{font-family:var(--head);font-weight:600;font-size:12px;text-anchor:middle;dominant-baseline:central}
+.wtb{fill:#FFFDF8}
+@media (max-width:640px){
+ nav{flex-direction:row;overflow-x:auto;gap:6px;padding:4px 2px 10px;margin:4px -16px 6px;padding-left:16px;scrollbar-width:thin}
+ .grp{flex-wrap:nowrap;flex:none}.grp b{display:none}.chipb{white-space:nowrap}
+ header svg{width:52px}header p{font-size:12.5px}
+ .ctrl label{margin-left:0}.btn{padding:7px 10px;font-size:14px}
+ #stage{min-height:220px}.card{padding:12px 12px 14px}
+}
+</style>
+</head>
+<body>
+<header><svg class="mascot" viewBox="0 0 160 156" width="150" height="146" role="img" aria-hidden="true" focusable="false"><ellipse cx="80" cy="146" rx="52" ry="9" fill="#E9DCEF" stroke="#3A2C40" stroke-width="2.4"/><g transform="translate(10 0)"><polygon points="30,68 34,30 64,52" fill="#FF9DB8" stroke="#3A2C40" stroke-width="3" stroke-linejoin="round"/><polygon points="110,68 106,30 76,52" fill="#FF9DB8" stroke="#3A2C40" stroke-width="3" stroke-linejoin="round"/><polygon points="38,56 40,40 54,50" fill="#FFB3C7"/><polygon points="102,56 100,40 86,50" fill="#FFB3C7"/><ellipse cx="70" cy="94" rx="46" ry="40" fill="#FF9DB8" stroke="#3A2C40" stroke-width="3"/><path d="M38 76 q6 -16 22 -20" stroke="#ffffff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".7"/><ellipse cx="34" cy="104" rx="8" ry="11" transform="rotate(24 34 104)" fill="#FF9DB8" stroke="#3A2C40" stroke-width="3"/><ellipse cx="106" cy="104" rx="8" ry="11" transform="rotate(-24 106 104)" fill="#FF9DB8" stroke="#3A2C40" stroke-width="3"/><ellipse cx="52" cy="133" rx="11" ry="6.5" fill="#FF9DB8" stroke="#3A2C40" stroke-width="3"/><ellipse cx="88" cy="133" rx="11" ry="6.5" fill="#FF9DB8" stroke="#3A2C40" stroke-width="3"/><ellipse cx="42" cy="101" rx="7" ry="4" fill="#FF8FAB" opacity=".55"/><ellipse cx="98" cy="101" rx="7" ry="4" fill="#FF8FAB" opacity=".55"/><polygon points="54.0,80.0 56.1,85.1 61.6,85.5 57.4,89.1 58.7,94.5 54.0,91.6 49.3,94.5 50.6,89.1 46.4,85.5 51.9,85.1" fill="#3A2C40"/><polygon points="86.0,80.0 88.1,85.1 93.6,85.5 89.4,89.1 90.7,94.5 86.0,91.6 81.3,94.5 82.6,89.1 78.4,85.5 83.9,85.1" fill="#3A2C40"/><path d="M62 100 q8 15 16 0 z" fill="#FF7A95" stroke="#3A2C40" stroke-width="2.6" stroke-linejoin="round"/></g><text x="22" y="46" font-size="22" fill="#FF5C8A" font-family="Nunito,sans-serif">♥</text><text x="128" y="36" font-size="30" fill="#FF5C8A" font-family="Nunito,sans-serif">♥</text><text x="136" y="118" font-size="18" fill="#FF9DB8" font-family="Nunito,sans-serif">♥</text></svg><div><h1><span>Watch It Work</span> — Ishika's Algo Buddies</h1><p>Protyek topic ekta chhoto class: age idea, tarpor step-by-step animation, shesh-e recap ar quiz. ▶ Play tipo, ba nijer speed-e Next. 💖</p></div></header>
+<main>
+<nav id="nav"></nav>
+<section class="card">
+  <h2 id="title"></h2>
+  <p id="blurb"></p>
+  <div id="legend"></div>
+  <div id="stage"></div>
+  <div id="cap"></div>
+  <div class="ctrl">
+    <button class="btn" id="bRestart" title="Restart">⏮</button>
+    <button class="btn" id="bPrev">◀ Back</button>
+    <button class="btn main" id="bPlay">▶ Play</button>
+    <button class="btn" id="bNext">Next ▶</button>
+    <span id="tag"></span><span id="count"></span>
+    <label>Speed <input type="range" id="speed" min="0.5" max="3" step="0.5" value="1"></label>
+  </div>
+  <div class="bar"><div id="prog"></div></div>
+</section>
+</main>
+<footer>Made with love for my Baybayy — Sam 💖 · <a href="https://algo-buddies.vercel.app">Back to the study guide</a> · Tip: keyboard ← → and Space also work.</footer>
+<script>
+const P=(F,o)=>F.push(JSON.parse(JSON.stringify(o)));
+const L={cmp:['cmp','comparing / looking'],swap:['swap','just moved'],done:['done','finished'],key:['key','special (pivot / key / min)'],cur:['cur','current'],seen:['seen','waiting in queue'],rej:['rej','skipped'],dim:['rej','ruled out']};
+
+/* ---------- renderers ---------- */
+function rArr(f){let h='<div class="arr">';f.a.forEach((v,i)=>{h+=`<div class="cellw"><div class="cell ${(f.cls||{})[i]||''}">${v}</div><div class="idx">${i}</div><div class="ptr">${(f.ptr||{})[i]||''}</div></div>`});h+='</div>';if(f.extra)h+=`<div class="extra">${f.extra}</div>`;return h}
+function rList(f){let h='<div class="ll"><span class="lab">head</span><span class="ar">→</span>';f.nodes.forEach(n=>{h+=`<div class="nd ${n.c||''}"><span>${n.v}</span><span>•</span></div><span class="ar">→</span>`});h+='<span class="lab">None</span></div>';if(f.extra)h+=`<div class="extra">${f.extra}</div>`;return h}
+function rSQ(f){let h='<div class="inp">';[...f.s].forEach((ch,i)=>{h+=`<div class="cell ${i<f.pos?'dim':i===f.pos?(f.pc||'cmp'):''}">${ch}</div>`});h+='</div><div class="sq"><div><div class="stk">';f.stack.forEach(x=>{h+=`<div class="cell key">${x}</div>`});h+='</div><div class="cap2">Stack (top = upore)</div></div>';
+ if(f.q){h+='<div><div class="que">';f.q.forEach(x=>{h+=`<div class="cell seen" style="width:38px;height:36px;aspect-ratio:auto">${x}</div>`});h+='</div><div class="cap2">Queue: front ← … ← back</div></div>'}
+ return h+'</div>'}
+function rCalls(f){let h='<div class="calls">';f.stack.forEach(x=>{h+=`<div class="call ${x.c||''}">${x.t}</div>`});return h+'</div><div class="cap2">Call stack — notun call upore boshe</div>'}
+function rActs(f){let h='<div class="acts">';f.acts.forEach((a,i)=>{h+=`<div class="actrow"><i>(${a[0]}, ${a[1]})</i><div class="track"><div class="abar ${f.st[i]||''}" style="left:${a[0]*10}%;width:${(a[1]-a[0])*10}%">${f.st[i]==='done'?'✓':f.st[i]==='rej'?'✗':''}</div></div></div>`});h+='<div class="axis">'+[0,1,2,3,4,5,6,7,8,9].map(x=>`<span>${x}</span>`).join('')+'</div></div>';if(f.extra)h+=`<div class="extra">${f.extra}</div>`;return h}
+function rGrid(f){const has=(l,i,w)=>(l||[]).some(p=>p[0]===i&&p[1]===w);let h='<table class="g"><tr><th>items \\ bag (kg)</th>';for(let w=0;w<=5;w++)h+=`<th>${w}</th>`;h+='</tr>';
+ f.t.forEach((row,i)=>{h+=`<tr><th>${f.rows[i]}</th>`;row.forEach((v,w)=>{const c=f.cur&&f.cur[0]===i&&f.cur[1]===w?'cmp':has(f.from,i,w)?'key':has(f.pick,i,w)?'done':'';h+=`<td class="${c}">${v===null?'':v}</td>`});h+='</tr>'});h+='</table>';if(f.extra)h+=`<div class="extra">${f.extra}</div>`;return h}
+function rKmp(f){let h='<div class="kmp"><div class="klab">text</div><div class="krow">';[...f.text].forEach((ch,i)=>{h+=`<div class="kc ${i===f.i?f.st:''}">${ch}</div>`});h+='</div><div class="krow">';for(let g=0;g<f.off;g++)h+='<div class="kc gap"></div>';[...f.pat].forEach((ch,j)=>{h+=`<div class="kc ${j<f.k?'done':j===f.cur?f.st:''}">${ch}</div>`});h+='</div><div class="klab">pattern (LPS = [0, 0, 1, 2])</div></div>';h+=`<div class="extra">Matches found at: <b>[${f.hits.join(', ')}]</b></div>`;return h}
+function rTree(f){const T=f.T;let h='<svg class="g" viewBox="0 0 400 215">';const X=k=>32+T.rank[k]*56,Y=k=>30+T.depth[k]*68;
+ f.present.forEach(k=>{const p=T.parent[k];if(p!=null)h+=`<line class="edge" x1="${X(p)}" y1="${Y(p)}" x2="${X(k)}" y2="${Y(k)}"/>`});
+ f.present.forEach(k=>{h+=`<g class="node ${(f.cls||{})[k]||''}"><circle cx="${X(k)}" cy="${Y(k)}" r="19"/><text x="${X(k)}" y="${Y(k)}">${k}</text></g>`});
+ h+='</svg>';if(f.extra)h+=`<div class="extra">${f.extra}</div>`;return h}
+function rGraph(G){return f=>{let h=`<svg class="g" viewBox="0 0 ${G.w} ${G.h}"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2D2433"/></marker></defs>`;const R=G.r||19;
+ G.edges.forEach(([u,v,w])=>{const a=G.pos[u],b=G.pos[v],dx=b[0]-a[0],dy=b[1]-a[1],d=Math.hypot(dx,dy),ux=dx/d,uy=dy/d,c=(f.e||{})[u+'-'+v]||'';
+  h+=`<line class="edge ${c}" x1="${a[0]+ux*R}" y1="${a[1]+uy*R}" x2="${b[0]-ux*(R+(G.dir?3:0))}" y2="${b[1]-uy*(R+(G.dir?3:0))}" ${G.dir?'marker-end="url(#ah)"':''}/>`;
+  if(w!=null){const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2;h+=`<circle class="wtb" cx="${mx}" cy="${my}" r="10"/><text class="wt" x="${mx}" y="${my}">${w}</text>`}});
+ Object.keys(G.pos).forEach(id=>{const p=G.pos[id];h+=`<g class="node ${(f.n||{})[id]||''}"><circle cx="${p[0]}" cy="${p[1]}" r="${R}"/><text x="${p[0]}" y="${p[1]}" ${id.length>2?'style="font-size:11.5px"':''}>${id}</text></g>`;if(f.lab&&f.lab[id]!=null)h+=`<text class="nlab" x="${p[0]}" y="${p[1]>G.h/2?p[1]+R+15:p[1]-R-6}">${f.lab[id]}</text>`});
+ h+='</svg>';if(f.side)h+=`<div class="extra">${f.side}</div>`;return h}}
+
+/* ---------- graphs ---------- */
+const G1={w:340,h:250,pos:{A:[170,40],B:[90,125],C:[250,125],D:[40,210],E:[150,210],F:[270,210]},edges:[['A','B'],['A','C'],['B','D'],['B','E'],['C','F'],['E','F']]};
+const ADJ1={A:['B','C'],B:['A','D','E'],C:['A','F'],D:['B'],E:['B','F'],F:['C','E']};
+const ek=(G,u,v)=>G.edges.some(e=>e[0]===u&&e[1]===v)?u+'-'+v:v+'-'+u;
+const G2={w:400,h:284,pos:{A:[36,140],B:[140,56],C:[140,226],D:[262,56],E:[262,226],F:[364,140]},edges:[['A','B',4],['A','C',2],['B','C',1],['B','D',5],['C','D',8],['C','E',10],['D','E',2],['D','F',6],['E','F',3]]};
+const G3={w:360,h:250,pos:{A:[50,50],B:[50,205],C:[180,128],D:[310,205],E:[310,50]},edges:[['A','B',4],['A','C',2],['B','C',1],['B','D',5],['C','D',8],['C','E',10],['D','E',2]]};
+const G4={w:400,h:240,r:23,dir:true,pos:{Prog:[50,60],DS:[180,60],Math:[50,185],Algo:[270,135],ML:[362,135]},edges:[['Prog','DS'],['Math','Algo'],['DS','Algo'],['Algo','ML']]};
+
+/* ---------- lessons: intro slides, recap, quiz ---------- */
+const LESSON={
+linear:{intro:[['🧦','Linear search ki?','Dhoro tomar kache onekgulo bondho box ache, ar tumi ekta specific number khujcho. Kono hint nei — tai prothom box theke shuru kore <b>ek ek kore</b> khule dekhbe. Etai linear search.'],
+ ['👀','Chhobi ta kibhabe porbe','Protyek box = list-er ekta item. Niche chhoto number ta holo <b>index</b> (position — 0 theke shuru hoy, 1 theke noy!). <b>Holud</b> = ekhon dekhchi · <b>jhapsha</b> = dekha shesh, mile ni · <b>shobuj</b> = peye gechi.'],
+ ['📋','Plan','Duto example dekhbo: (1) target <b>30</b> — list-e ache. (2) target <b>99</b> — list-e nei. Kheyal koro duto khetre koyta check lage.']],
+ recap:['Shuru theke shesh porjonto ek ek kore check.','List sorted na holeo kaaj kore.','Best case O(1) (prothomei pele), worst case O(n) (shesh-e thakle ba na thakle).','Na pele <code>-1</code> return — karon 0 ekta valid index.'],
+ quiz:['1000 ta item-er list-e target ta nei. Koyta check lagbe?','<b>1000 ta</b> — shob dekhe tobei bola jay “nei”. Etai worst case, O(n).']},
+binary:{intro:[['📖','Binary search ki?','“1 theke 100-er moddhe ekta number guess koro” khela-y tumi age 50 bolo, tai na? Protyek bar <b>majher ta</b> dekhe ordhek baad dao. Etai binary search.'],
+ ['⚠️','Ekta shorto','List ta <b>sorted</b> hote-i hobe. Tobei “majher ta target-er cheye chhoto” mane target nishchoi <b>daan dike</b> — bam dik puro baad deowa jay.'],
+ ['👀','Chhobi ta kibhabe porbe','<code>lo</code> ar <code>hi</code> = je ongshe target thakte pare tar du pranto. <code>mid</code> = majher index. <b>Jhapsha</b> box = baad pore geche, ar dekhbo na.'],
+ ['📋','Plan','Duto example: (1) target <b>21</b> — ache. (2) target <b>5</b> — nei. Dekho 9 ta item-e koto kom bar dekhte hoy.']],
+ recap:['Shudhu sorted list-e kaaj kore.','Protyek step-e ordhek baad → O(log n).','<code>mid = (lo + hi) // 2</code>. Target boro hole <code>lo = mid + 1</code>, chhoto hole <code>hi = mid - 1</code>.','<code>lo &gt; hi</code> hoye gele window khali → nei, <code>-1</code>.'],
+ quiz:['10 lakh (1,000,000) sorted item-e worst case-e koto bar dekhte hobe?','Matro <b>~20 bar</b> — karon 2²⁰ ≈ 10 lakh. Linear search-e lagto 10 lakh bar!']},
+bubble:{intro:[['🫧','Bubble sort ki?','Pasha-pashi duto item dekho. Bam diker ta boro hole jayga bodol (swap). Erokom korte korte boro number gulo bubble-er moto <b>daan dike bheshe jay</b>.'],
+ ['🔁','Pass mane ki?','Bam theke daan porjonto ekbar puro ghora = ekta <b>pass</b>. Protyek pass-er shesh-e baki der moddhe shobcheye boro ta tar final jaygay pouche jay — tai porer pass-e take ar dekhte hoy na.'],
+ ['👀','Chhobi ta kibhabe porbe','<b>Holud</b> = ei duto compare korchi · <b>golapi</b> = ei matro swap holo · <b>shobuj</b> = final jaygay boshe geche.']],
+ recap:['Pasha-pashi compare + swap.','Protyek pass-e ekta kore boro item shesh-e fix hoy.','Kono pass-e swap na hole → early exit (best case O(n)).','Worst/average O(n²), extra memory lage na, stable.'],
+ quiz:['Already sorted list dile bubble sort (early-exit flag shoho) koyta pass kore?','<b>Ekta-i</b>. Prothom pass-e kono swap hoy na → thame jay. Tai best case O(n).']},
+selection:{intro:[['🎯','Selection sort ki?','Unsorted ongsher moddhe <b>shobcheye chhoto</b> ta khuje ber koro, ar shetake shamne boshao. Tarpor baki der moddhe abar. Class photo-r jonno bar bar shobcheye bete jon-ke bechhe neowar moto.'],
+ ['👀','Chhobi ta kibhabe porbe','<b>Beguni</b> = ekhon porjonto paowa shobcheye chhoto (min) · <b>holud</b> = jeta-r shathe compare korchi · <b>shobuj</b> = sorted ongsho (bam dik theke bare).'],
+ ['💡','Kheyal koro','Protyek round-e onek compare, kintu swap <b>matro ekta</b>. Etai selection sort-er boishishto.']],
+ recap:['Protyek round: min khojo → shamne swap.','Shob shomoy O(n²) — sorted list holeo puro scan kore.','Max n − 1 ta swap (bubble-er cheye onek kom).','Stable noy.'],
+ quiz:['[3a, 3b, 1] sort korle 3a ar 3b-er order ki thik thake?','Na. Prothom round-e 3a ar 1 swap hoy → [1, 3b, 3a]. Tai selection sort <b>stable noy</b>.']},
+insertion:{intro:[['🃏','Insertion sort ki?','Tash khelar shomoy haat-er card jebhabe shajao: notun card ta tule, boro card gulo-ke pash katiye <b>thik jaygay dhokao</b>.'],
+ ['👀','Chhobi ta kibhabe porbe','<b>Shobuj</b> = haat-er sorted card · <b>beguni</b> = je card ta ekhon boshachhi (key) · <b>holud</b> = je boro card ta daan dike shore jachhe.'],
+ ['💡','Kheyal koro','Key-er cheye boro card pelei sheta ek ghor daan dike shore. Chhoto ba shoman card pele thame jai — tai shoman card-er order bodlay na (stable).']],
+ recap:['Bam dik shob shomoy sorted; ekta ekta kore card dhoke.','Nearly sorted list-e khub fast (best O(n)).','Worst O(n²) — ulto sorted list.','Stable, extra memory lage na.'],
+ quiz:['Kon input-e insertion sort shobcheye slow?','<b>Ulto (descending) sorted</b> list — protyek card-ke ekdom shamne porjonto shorate hoy → O(n²).']},
+merge:{intro:[['🥞','Merge sort ki?','Boro kaaj-ke chhoto koro: list ta <b>ordhek</b> koro, abar ordhek… jotokkhon na ekta kore item thake. Ekta item to emni-i sorted!'],
+ ['🤝','Merge mane ki?','Duto <b>sorted</b> ongsho pasha-pashi rakho. Dutor shamner item compare koro, chhoto ta age nao. Erokom kore ekta boro sorted list toiri hoy.'],
+ ['👀','Chhobi ta kibhabe porbe','<b>Holud</b> = je ongsho niye ekhon kaaj korchi · <b>golapi</b> = merge kore boshano item · <b>jhapsha</b> = ekhon-er kaaj-er baire.']],
+ recap:['Divide and conquer: bhag → sort → merge.','Shob case-e O(n log n).','O(n) extra memory lage (merge-er jonno).','Stable — tie hole bam diker ta age (<code>&lt;=</code>).'],
+ quiz:['Merge sort-e “log n” kotha theke ashe?','List ta bar bar ordhek hoy — n theke 1-e pouchote <b>log₂ n</b> dhap lage. Protyek dhap-e mot n ta item merge hoy → n × log n.']},
+quick:{intro:[['⚡','Quick sort ki?','Ekta item bechhe nao — <b>pivot</b>. Pivot-er cheye chhoto shobai bam dike, boro ra daan dike. Tokhon pivot tar <b>final jaygay</b>. Tarpor du dik-e abar eki kaaj.'],
+ ['👀','Chhobi ta kibhabe porbe','<b>Beguni</b> = pivot (ekhane range-er shesh item) · <b>holud</b> = pivot-er shathe compare korchi · <code>i</code> = “chhoto der group” kothay shesh · <b>shobuj</b> = final jaygay.'],
+ ['📝','Note','PDF-er code notun list banay (less / equal / greater) — porte shoja. Ekhane <b>in-place</b> version dekhchi: eki idea, shudhu list-er bhitorei swap kore.']],
+ recap:['Pivot → partition → du dik-e recursion.','Average O(n log n).','Worst O(n²) — jokhon pivot bar bar shobcheye chhoto/boro hoy.','Random ba median-of-three pivot nile worst case erano jay.'],
+ quiz:['Quick sort kokhon O(n²) hoye jay?','Jokhon pivot protyek bar ek pashe 0 ta item rakhe (jemon already sorted list + pivot = shesh item). Tokhon n ta level, protyek ta-y ~n kaaj.']},
+linkedlist:{intro:[['🚂','Linked list ki?','Train-er coach-er moto: protyek <b>node</b>-e ekta value ar <b>porer node-er thikana</b> (<code>next</code>). Shudhu prothom ta-r thikana jana — <code>head</code>.'],
+ ['🆚','Array-r shathe tofat','Array-te <code>a[5]</code> shoja paowa jay. Linked list-e 5 number-e jete hole head theke <b>ek ek kore hete</b> jete hoy. Kintu add/delete-e kichu shift korte hoy na — shudhu arrow bodlao.'],
+ ['👀','Chhobi ta kibhabe porbe','Box = node (value | next). → = next pointer. <b>Golapi</b> = notun node · <b>holud</b> = ekhon dekhchi · <b>dhushor</b> = delete hochhe.']],
+ recap:['Node = data + next.','push_front O(1); khoja O(n).','Delete: ager node-er <code>next</code> ke porer node-e point korao.','Index diye direct access nei.'],
+ quiz:['Linked list-er shamne insert O(1), kintu array-r shamne insert O(n). Keno?','Array-te baki <b>shob item ek ghor shorate</b> hoy. Linked list-e shudhu: notun node-er next = purono head, tarpor head = notun node.']},
+stackqueue:{intro:[['🍽️','Stack ki?','Thala-r stack: notun thala <b>upore</b> rakho, nite hole <b>upor theke-i</b> nao. Shesh-e ja dhukeche, age ta-i beroy — <b>LIFO</b> (Last In, First Out).'],
+ ['🥟','Queue ki?','Phuchka-r line: <b>pichone</b> darao, <b>shamne</b> theke serve hoy. Je age esheche she age pay — <b>FIFO</b> (First In, First Out).'],
+ ['📋','Plan','Age stack diye bracket check: <code>{[()]}</code> (thik) ar <code>([)]</code> (bhul). Niyom: opening pele push; closing pele pop kore dekho jora mele ki na. Tarpor queue-e A, B, C.']],
+ recap:['Stack: push / pop — eki dik theke. LIFO.','Queue: append / popleft — du dik. FIFO.','Bracket matching, undo, function call → stack.','Line, printer, BFS → queue. Python-e <code>deque</code> use koro.'],
+ quiz:['Stack-e 1, 2, 3 push korle pop-e ki order-e beroy? Queue hole?','Stack: <b>3, 2, 1</b> (ulto). Queue: <b>1, 2, 3</b> (eki order).']},
+bst:{intro:[['🌳','Binary search tree ki?','Ekta tree jekhane protyek node-er max duto child. Niyom ektai: <b>bam dike chhoto, daan dike boro</b>.'],
+ ['➕','Insert kibhabe hoy?','Root theke shuru. Notun key chhoto hole bam-e jao, boro hole daan-e. Jekhane <b>khali jayga</b> pabe, shekhane boshao.'],
+ ['👀','Chhobi ta kibhabe porbe','<b>Holud</b> = ei node-er shathe compare korchi · <b>golapi</b> = notun boshlo. Shesh-e inorder traversal-e <b>shobuj</b> = visit hoye geche.']],
+ recap:['Bam &lt; node &lt; daan.','Search/insert-er khoroch = tree-r height: balanced hole O(log n).','Sorted order-e insert korle chain hoye jay → O(n).','Inorder (Left, Root, Right) → sorted output.'],
+ quiz:['1, 2, 3, 4, 5 ei order-e insert korle tree ta kemon dekhte hobe?','Shob daan dike — ekta <b>lomba chain</b> (skewed). Height 5, tai search O(n). Balanced tree (AVL / red-black) eta erae.']},
+recursion:{intro:[['🪆','Recursion ki?','Function jokhon <b>nijeke-i</b> call kore, ektu chhoto problem diye. Russian putul-er moto — ekta-r bhitor arekta.'],
+ ['🛑','Duto jinish lagbei','<b>Base case</b>: shobcheye chhoto problem, jar uttor shoja jana (ekhane call thame). <b>Recursive case</b>: problem chhoto kore abar call.'],
+ ['👀','Chhobi ta kibhabe porbe','Protyek box = ekta function call, <b>call stack</b>-e joma. <b>Holud</b> = opekkha korche · <b>shobuj</b> = uttor peye geche. Mone rakho: 4! = 4 × 3 × 2 × 1.']],
+ recap:['Base case na thakle → infinite call → <code>RecursionError</code>.','Call gulo stack-e joma hoy, uttor ulto order-e phire ashe.','Eki sub-problem bar bar ele → memoization (<code>lru_cache</code>).','fib: cache chhara O(2ⁿ), cache diye O(n).'],
+ quiz:['factorial(4) call korle mot koyta function call hoy?','<b>5 ta</b>: factorial(4), (3), (2), (1), (0). Stack-er max depth-o 5.']},
+greedy:{intro:[['🎬','Greedy ki?','Protyek step-e <b>ekhon ja shobcheye bhalo</b> lagche shetai nao, pore ar mot bodlio na. Shoja ar fast.'],
+ ['🏫','Problem ta','Ekta ghor, onek activity — protyekta-r (shuru, shesh) shomoy ache. Shobcheye beshi koyta activity dhokano jay, jate kono duto overlap na kore?'],
+ ['💡','Greedy choice','Je activity <b>shobcheye age shesh</b> hoy, sheta nao. Tate baki der jonno shobcheye beshi shomoy bache. <b>Shobuj ✓</b> = nilam · <b>dhushor ✗</b> = baad.']],
+ recap:['Finish time onujayi sort → O(n log n).','start ≥ last finish hole nao.','Greedy shob problem-e kaaj kore na: coins [4, 3, 1], amount 6 → greedy 3 coin, best 2.','Greedy thik ki na — proman lage; bhul dekhate ekta counter-example-i jotheshto.'],
+ quiz:['Finish time-er bodole start time onujayi nile ki bhul hote pare?','Hya. (1, 10), (2, 3), (4, 5): age shuru hoy (1, 10) — sheta nile baki duto baad, mot 1. Best holo (2, 3) + (4, 5) = 2.']},
+dp:{intro:[['📝','Dynamic programming ki?','Boro problem-ke chhoto chhoto problem-e bhango. Protyek chhoto ta <b>ekbar</b> solve kore <b>table-e likhe rakho</b>. Pore dorkar hole shudhu dekhe nao.'],
+ ['🪙','Problem ta','Coin ache 4, 3, 1 (jotogulo ichhe). Amount 6 banate <b>shobcheye kom</b> koyta coin lage? Greedy bolbe 4 + 1 + 1 = 3 coin. Dekhi DP ki bole.'],
+ ['👀','Chhobi ta kibhabe porbe','Box-er niche index = <b>amount</b>. Box-er bhitore = shei amount banate minimum coin (<code>dp[x]</code>). <b>Holud</b> = ekhon bhorchi · <b>beguni</b> = je purono uttor kaaje lagachhi · ∞ = ekhono jani na.']],
+ recap:['dp[x] = min(dp[x − c] + 1), shob coin c-er jonno.','Chhoto amount theke boro-r dike bhoro.','Time O(amount × coins).','DP lage jokhon: overlapping subproblems + optimal substructure.'],
+ quiz:['dp[6] ber korte kon kon purono uttor lagche?','dp[2] (coin 4), dp[3] (coin 3), dp[5] (coin 1). Minimum = dp[3] + 1 = <b>2</b>.']},
+knapsack:{intro:[['🎒','0/1 Knapsack ki?','Bag-e 5 kg dhore. Protyek item-er weight ar value ache. Item <b>puro nebe ba nebe na</b> (0/1). Shobcheye beshi value kibhabe?'],
+ ['📊','Table-er mane','Row = “ei porjonto item use kora jabe”. Column = bag-er capacity (kg). Cell = shei obosthay <b>best value</b>.'],
+ ['⚖️','Protyek cell-e duto option','<b>Leave</b>: thik upor-er cell. <b>Take</b>: item-er value + (upor-er row-e, baki weight-er cell). Je ta boro, sheta likho. <b>Beguni</b> = je cell gulo dekhchi · <b>holud</b> = je cell bhorchi.']],
+ recap:['dp[i][w] = max(leave, take).','Time ar space O(n × W).','Uttor = shesh cell. Pichone hete item ber kora jay.','Item bhanga gele (fractional) greedy cholto; 0/1-e DP lage.'],
+ quiz:['Greedy “shobcheye dami age” nile ekhane ki hoto?','C (40) nito, 2 kg baki → B (15) → 55. Ekhane mile gelo! Kintu shob input-e mele na — tai guarantee-r jonno DP.']},
+kmp:{intro:[['🔍','String search ki?','Lomba <b>text</b>-er bhitor chhoto <b>pattern</b> kothay ache — Ctrl+F. Naive upay: protyek position-e pattern boshiye melao; mismatch hole ek ghor shoriye <b>abar prothom theke</b>.'],
+ ['🧠','KMP-er chalaki','Mismatch-er age ja mile chilo sheta to jani! Tar shesh ongsho jodi pattern-er shuru-r shathe mele, tahole oi tuku <b>abar melate hobe na</b>.'],
+ ['📋','LPS table','<code>ABAB</code>-er LPS = [0, 0, 1, 2]. Mane: “ABAB” mile gele shesh-er “AB” = shuru-r “AB” → 2 ta letter already mile ache. <b>Shobuj</b> = mile geche · <b>golapi</b> = mismatch.']],
+ recap:['LPS[i] = pattern[0..i]-er longest prefix ja suffix-o.','Mismatch hole <code>k = lps[k − 1]</code>; text pointer pichone jay na.','Time O(n + m); naive O(n × m).','Overlapping match-o dhore (index 0 ar 2).'],
+ quiz:['Naive search kon dhoroner input-e khub slow?','Repeat-e bhora text — jemon “AAAAAAAAAB”-e pattern “AAAB”: protyek position-e pray puro pattern mile, shesh-e mismatch.']},
+bfs:{intro:[['🕸️','Graph ki?','Kichu bindu (<b>vertex</b>) ar tader moddhe line (<b>edge</b>). Jemon: bondhu-der network, shohor ar rasta.'],
+ ['🌊','BFS ki?','Start theke age <b>1 step dur-er shobai</b>, tarpor 2 step dur-er… pukur-e dhil chhurle dheu jemon chhoray. Ke age jabe mone rakhte <b>queue</b> lage.'],
+ ['👀','Chhobi ta kibhabe porbe','<b>Komla</b> = ekhon visit korchi · <b>neel</b> = queue-e opekkha korche · <b>shobuj</b> = shesh. Mota shobuj line = je edge diye prothom pouchechi.']],
+ recap:['Queue (FIFO) use kore.','Queue-e dhokanor shomoy-i “seen” mark koro — na hole duplicate dhuke.','Time O(V + E).','Unweighted graph-e shortest path (shobcheye kom edge) dey.'],
+ quiz:['BFS-e queue-er bodole stack dile ki hobe?','Sheta <b>DFS</b>-er moto hoye jabe — shesh-e dhoka node age beroy, tai gobhir-e chole jay.']},
+dfs:{intro:[['🧶','DFS ki?','Ekta rasta dhore <b>jotodur jaowa jay</b> chole jao. Ar jaowa na gele ek pa pichiye (backtrack) onno rasta dhoro. Golir bhitor goli ghorar moto.'],
+ ['📚','Ki use kore?','Recursion (ba nijer stack). Call stack mone rakhe kon rasta diye eshechi — tai pichiye asha jay.'],
+ ['👀','Chhobi ta kibhabe porbe','<b>Komla</b> = je path-e ekhon achi · <b>shobuj</b> = puro shesh. “Call stack” line-e dekho kon kon node-er kaaj ekhono cholche.']],
+ recap:['Stack / recursion use kore.','Time O(V + E).','Cycle khoja, topological sort, maze solve — DFS.','Shortest path guarantee kore na.'],
+ quiz:['Eki graph-e BFS dilo A B C D E F, DFS dilo A B D E F C. C keno shesh-e?','DFS age B-er dik-e puro gobhir-e gelo (B → D, tarpor E → F). F theke C-te pouchalo — tai C shobar shesh-e.']},
+dijkstra:{intro:[['📍','Problem ta','Rasta gulor <b>doirgho</b> (weight) ache. A theke baki shob jaygay <b>shobcheye kom total weight</b>-er rasta chai. GPS thik eta-i kore.'],
+ ['💡','Idea','Protyek node-er jonno “ekhon porjonto best distance” rakho. Bar bar <b>shobcheye kacher</b> unfinished node nao — or distance pakka. Tarpor or protibeshi der distance komano jay ki na dekho (<b>relax</b>).'],
+ ['👀','Chhobi ta kibhabe porbe','Node-er pashe lal number = best distance (∞ = ekhono pouchai ni). <b>Komla</b> = ekhon-er node · <b>holud line</b> = je edge check korchi · <b>shobuj</b> = final.']],
+ recap:['Min-heap theke shobcheye kacher node.','Relax: dist[u] + w &lt; dist[v] hole update.','Time O((V + E) log V).','Negative weight thakle kaaj kore na → Bellman-Ford.'],
+ quiz:['A → B shoja rasta 4, kintu B-er final distance 3. Keno?','A → C → B = 2 + 1 = <b>3</b>, ja 4-er cheye kom. Shoja rasta shob shomoy shosta noy!']},
+kruskal:{intro:[['🔌','Problem ta','5 ta gram cable diye jurte hobe. Protyek link-er khoroch ache. <b>Shobai connected</b> thakbe, <b>total khoroch minimum</b>. Etai Minimum Spanning Tree (MST).'],
+ ['💡','Kruskal-er idea','Shob edge shosta theke dami sajao. Ek ek kore nao — <b>jodi loop na hoy</b>. Loop mane oi duto gram already connected, tai edge ta faltu.'],
+ ['👀','Chhobi ta kibhabe porbe','<b>Holud line</b> = ei edge ta bhabchi · <b>mota shobuj</b> = nilam · <b>dhushor dag-kata</b> = baad (loop hoto).']],
+ recap:['Sort edges → O(E log E).','Loop check: Union-Find (<code>find</code> / <code>union</code>).','V ta vertex-er MST-te thik V − 1 ta edge.','Greedy — ar eta proven correct.'],
+ quiz:['6 ta vertex-er graph-er MST-te koyta edge thakbe?','<b>5 ta</b> (V − 1). Kom hole shobai connected noy; beshi hole loop.']},
+topo:{intro:[['🧦','Problem ta','Kichu kaaj-er <b>prerequisite</b> ache: age Programming, pore Data Structures. Emon ekta order chai jekhane protyek kaaj tar prerequisite-er <b>pore</b> ashe.'],
+ ['🔢','In-degree','Ekta node-er dike koyta arrow <b>dhukche</b> = koyta prerequisite baki. In-degree 0 mane ekhon-i kora jay.'],
+ ['💡','Kahn-er upay','In-degree 0 node gulo queue-e. Ekta ber koro → output. Tar arrow gulo “muche” dao (protibeshi-r in-degree −1). Notun 0 hole queue-e. <b>Neel</b> = ready · <b>shobuj</b> = shesh.']],
+ recap:['Shudhu DAG-e (cycle chhara directed graph) kaaj kore.','Time O(V + E).','Output-e shob node na ele → cycle ache.','Order unique na-o hote pare.'],
+ quiz:['ML → Prog arrow jog korle ki hobe?','Ekta <b>cycle</b> hoy: Prog → DS → Algo → ML → Prog. Shudhu Math queue-e dhoke; baki der in-degree kokhono 0 hoy na → function <code>None</code> dey.']}
+};
+
+function rSlide(f){return `<div class="slide"><div class="se">${f.e}</div><h3>${f.h}</h3><div class="st">${f.t}</div></div>`}
+function lessonFrames(v){const Ls=LESSON[v.id],n=Ls.intro.length;const strip=x=>x.replace(/<[^>]+>/g,'');
+ const A=Ls.intro.map((s,i)=>({slide:1,tag:'📖 Lesson',e:s[0],h:s[1],t:`<p>${s[2]}</p>`,cap:i<n-1?'Age idea ta bujhe ni. Porar por <b>Next ▶</b> tipo.':'Ready? Ebar step-by-step cholte dekhi — protyek step-er niche lekha thakbe ki holo ar keno.'}));
+ const B=v.frames().map(f=>(f.tag='🎞️ Animation',f));
+ const C=[{slide:1,tag:'✅ Recap',e:'✅',h:'Mone rakho',t:'<ul>'+Ls.recap.map(x=>`<li>${x}</li>`).join('')+'</ul>',cap:'Ei koyta point exam-e nijer bhashay bolte parle-i hobe.'},
+  {slide:1,tag:'🤔 Quiz',e:'🤔',h:'Bolo to?',t:`<p class="qq">${Ls.quiz[0]}</p>`,cap:'Age nije bhabo (mukhe bolo!)… tarpor <b>Next ▶</b> tipe uttor melao.'},
+  {slide:1,tag:'🤔 Quiz',e:'🎉',h:'Uttor',t:`<p class="qq">${Ls.quiz[0]}</p><p>${Ls.quiz[1]}</p>`,cap:'Darun! Ebar upor theke porer topic bechhe nao, ba ⏮ tipe abar dekho.'}];
+ return [...A,...B,...C]}
+
+/* ---------- visualisations ---------- */
+const PARTS=[['p1','🔎 Searching'],['p2','🧺 Sorting'],['p3','🌳 Structures'],['p4','🧠 Thinking'],['p5','🔤 Strings'],['p6','🕸️ Graphs']];
+const VIZ=[];
+VIZ.push({id:'linear',part:'p1',title:'🧦 Linear search',blurb:'Ek ek kore shob box khule dekha — jotokkhon na target pachhi.',lg:['cmp','done','dim'],render:rArr,frames(){
+ const a=[10,50,20,40,30,60],F=[];
+ const run=(t,n)=>{P(F,{a,extra:`Target = <b>${t}</b>`,cap:`<b>Example ${n}:</b> target = <b>${t}</b>. Amra jani na eta kothay — tai index 0 theke shuru.`});
+  for(let i=0;i<a.length;i++){const cls={};for(let k=0;k<i;k++)cls[k]='dim';
+   if(a[i]===t){cls[i]='done';P(F,{a,cls,ptr:{[i]:'i'},extra:`Target = <b>${t}</b> · checks = <b>${i+1}</b>`,cap:`index ${i} → ${a[i]}. Mile geche! ✅ Function <code>return ${i}</code> kore — position dey, value noy. Baki box ar khulte holo na.`});return}
+   cls[i]='cmp';P(F,{a,cls,ptr:{[i]:'i'},extra:`Target = <b>${t}</b> · checks = <b>${i+1}</b>`,cap:`index ${i} → ${a[i]}. ${a[i]} ki ${t}? Na. Tai porer box-e jai (<code>i</code> ek barlo).`})}
+  const cls={};a.forEach((_,k)=>cls[k]='dim');P(F,{a,cls,extra:`Target = <b>${t}</b> · checks = <b>${a.length}</b>`,cap:`Shob ${a.length} ta box dekha shesh, ${t} kothao nei. Loop shesh → <code>return -1</code> (mane “nei”). Etai worst case.`})};
+ run(30,1);run(99,2);
+ P(F,{a,cap:'Tulona: 30 pete 5 ta check, 99 “nei” bujhte 6 ta (shob). List joto boro, worst case toto beshi → <b>O(n)</b>.'});
+ return F}});
+VIZ.push({id:'binary',part:'p1',title:'📖 Binary search',blurb:'Sorted list-er majhkhane dekho, ordhek baad dao, abar koro.',lg:['cmp','done','dim'],render:rArr,frames(){
+ const a=[1,3,4,7,11,13,18,21,25],F=[];
+ const run=(t,n)=>{let lo=0,hi=a.length-1,looks=0;
+  const fr=(mid,c,cap)=>{const cls={},ptr={};a.forEach((_,i)=>{if(i<lo||i>hi)cls[i]='dim'});const add=(i,s)=>{ptr[i]=ptr[i]?ptr[i]+' '+s:s};if(lo<=hi){add(lo,'lo');add(hi,'hi')}if(mid!=null){add(mid,'mid');cls[mid]=c}P(F,{a,cls,ptr,extra:`Target = <b>${t}</b> · looks = <b>${looks}</b>`,cap})};
+  fr(null,'',`<b>Example ${n}:</b> target = <b>${t}</b>. Puro list-e thakte pare, tai <code>lo = 0</code>, <code>hi = ${hi}</code>.`);
+  while(lo<=hi){const mid=(lo+hi)>>1;looks++;
+   fr(mid,'cmp',`Majher index: <code>mid = (${lo} + ${hi}) // 2 = ${mid}</code>. Okhane ache <b>${a[mid]}</b>.`);
+   if(a[mid]===t){fr(mid,'done',`${a[mid]} = ${t}. Mile geche! ✅ <code>return ${mid}</code>. 9 ta item-e matro <b>${looks} bar</b> dekhte holo.`);return}
+   if(a[mid]<t){fr(mid,'cmp',`${a[mid]} &lt; ${t}. List sorted, tai ${a[mid]} ar tar bam-er shobai ${t}-er cheye chhoto → baad. <code>lo = mid + 1 = ${mid+1}</code>.`);lo=mid+1}
+   else{fr(mid,'cmp',`${a[mid]} &gt; ${t}. Tai ${a[mid]} ar tar daan-er shobai ${t}-er cheye boro → baad. <code>hi = mid - 1 = ${mid-1}</code>.`);hi=mid-1}
+   if(lo<=hi)fr(null,'',`Ekhon shudhu index ${lo}–${hi} baki (${hi-lo+1} ta item). Abar majhkhane dekhbo.`)}
+  fr(null,'',`<code>lo = ${lo}</code> ar <code>hi = ${hi}</code> — lo &gt; hi, mane khojar jayga-i ar nei. ${t} list-e nei → <code>return -1</code>. Matro ${looks} bar dekhe bujhe gelam!`)};
+ run(21,1);run(5,2);
+ P(F,{a,cap:'9 ta item: linear search-e worst case 9 ta check, binary search-e max 4. Protyek bar ordhek baad → <b>O(log n)</b>.'});
+ return F}});
+VIZ.push({id:'bubble',part:'p2',title:'🫧 Bubble sort',blurb:'Pasha-pashi duto compare; bam ta boro hole swap. Boro gulo daan dike bheshe jay.',lg:['cmp','swap','done'],render:rArr,frames(){
+ const a=[5,2,9,1,5,6],n=a.length,F=[],done=new Set();const mk=x=>{const c={};done.forEach(i=>c[i]='done');return Object.assign(c,x||{})};
+ P(F,{a,cap:'Ei list ta chhoto theke boro shajabo. Bam dik theke shuru kore pasha-pashi duto kore dekhbo; bam ta boro hole swap.'});
+ for(let i=0;i<n-1;i++){let sw=false;
+  for(let j=0;j<n-1-i;j++){const big=a[j]>a[j+1];
+   P(F,{a,cls:mk({[j]:'cmp',[j+1]:'cmp'}),cap:`Pass ${i+1}: ${a[j]} ar ${a[j+1]} compare. `+(big?'Bam ta boro → swap!':'Thik ache, kichu korte hobe na.')});
+   if(big){[a[j],a[j+1]]=[a[j+1],a[j]];sw=true;P(F,{a,cls:mk({[j]:'swap',[j+1]:'swap'}),cap:`Swap holo → ${a[j]}, ${a[j+1]}.`})}}
+  done.add(n-1-i);
+  if(!sw){for(let k=0;k<n;k++)done.add(k);P(F,{a,cls:mk(),cap:`Pass ${i+1}-e ekta-o swap hoyni → puro list sorted! Early exit. 🎉`});return F}
+  P(F,{a,cls:mk(),cap:`Pass ${i+1} shesh: <b>${a[n-1-i]}</b> nijer final jaygay boshe geche (shobuj). Porer pass-e etake ar chhobo na — tai protyek pass ektu chhoto hoy.`})}
+ for(let k=0;k<n;k++)done.add(k);P(F,{a,cls:mk(),cap:'Sorted! 🎉'});return F}});
+VIZ.push({id:'selection',part:'p2',title:'🎯 Selection sort',blurb:'Baki gulor moddhe shobcheye chhoto ta khojo, shamne boshao.',lg:['cmp','key','swap','done'],render:rArr,frames(){
+ const a=[5,2,9,1,5,6],n=a.length,F=[];const mk=(i,x)=>{const c={};for(let k=0;k<i;k++)c[k]='done';return Object.assign(c,x||{})};
+ P(F,{a,cap:'Protyek round-e unsorted ongsher shobcheye chhoto item ta khujbo.'});
+ for(let i=0;i<n-1;i++){let m=i;P(F,{a,cls:mk(i,{[m]:'key'}),ptr:{[i]:'i'},cap:`Round ${i+1}: dhore nilam ${a[m]} shobcheye chhoto (min).`});
+  for(let j=i+1;j<n;j++){const sm=a[j]<a[m];P(F,{a,cls:mk(i,{[m]:'key',[j]:'cmp'}),ptr:{[i]:'i'},cap:`${a[j]} ki ${a[m]}-er cheye chhoto? `+(sm?'Hya → notun min!':'Na.')});if(sm)m=j}
+  if(m!==i){[a[i],a[m]]=[a[m],a[i]];P(F,{a,cls:mk(i,{[i]:'swap',[m]:'swap'}),cap:`Min = ${a[i]}. Shetake index ${i}-e swap korlam.`})}
+  else P(F,{a,cls:mk(i+1),cap:`Min = ${a[i]} already thik jaygay — swap lagbe na.`})}
+ P(F,{a,cls:mk(n),cap:'Sorted! 🎉 Protyek round-e max ekta swap.'});return F}});
+VIZ.push({id:'insertion',part:'p2',title:'🃏 Insertion sort',blurb:'Tash-er moto: porer card ta tule bam dike shoriye thik jaygay boshao.',lg:['key','cmp','done'],render:rArr,frames(){
+ const a=[5,2,9,1,5,6],n=a.length,F=[];const mk=(i,x)=>{const c={};for(let k=0;k<=i;k++)c[k]='done';return Object.assign(c,x||{})};
+ P(F,{a,cls:{0:'done'},cap:'Prothom card (5) eka-i sorted haat. Baki gulo ek ek kore dhokabo.'});
+ for(let i=1;i<n;i++){let j=i;const key=a[i];P(F,{a,cls:mk(i-1,{[i]:'key'}),cap:`Porer card: <b>${key}</b>. Eta ke bam dike thik jaygay niye jabo.`});
+  while(j>0&&a[j-1]>key){P(F,{a,cls:mk(i,{[j]:'key',[j-1]:'cmp'}),cap:`${a[j-1]} &gt; ${key} → ${a[j-1]} ek ghor daan dike shore.`});[a[j-1],a[j]]=[a[j],a[j-1]];j--}
+  P(F,{a,cls:mk(i,{[j]:'key'}),cap:j>0?`${a[j-1]} ≤ ${key} → thamo. ${key} index ${j}-e boshe gelo.`:`${key} ekdom shamne pouche gelo.`})}
+ P(F,{a,cls:mk(n-1),cap:'Sorted! 🎉'});return F}});
+VIZ.push({id:'merge',part:'p2',title:'🥞 Merge sort',blurb:'Ordhek koro jotokkhon na ekta item thake, tarpor sorted ongsho gulo merge koro.',lg:['cmp','swap','done','dim'],render:rArr,frames(){
+ const a=[5,2,9,1,5,6],n=a.length,F=[];const rng=(lo,hi,x,c)=>{const cls={};for(let k=0;k<n;k++)if(k<lo||k>hi)cls[k]='dim';else if(c)cls[k]=c;return Object.assign(cls,x||{})};
+ P(F,{a,cap:'Divide and conquer: age bhag, pore merge.'});
+ (function ms(lo,hi){if(hi<=lo)return;const mid=lo+((hi-lo+1)>>1)-1;
+  P(F,{a,cls:rng(lo,hi,null,'cmp'),cap:`Bhag koro: [${a.slice(lo,mid+1)}] ar [${a.slice(mid+1,hi+1)}].`});
+  ms(lo,mid);ms(mid+1,hi);const Lf=a.slice(lo,mid+1),R=a.slice(mid+1,hi+1);let i=0,j=0,k=lo;
+  P(F,{a,cls:rng(lo,hi,null,'cmp'),extra:`Merge: <b>[${Lf}]</b> + <b>[${R}]</b>`,cap:`Ebar duto sorted ongsho merge: [${Lf}] ar [${R}]. Shamner duto-r moddhe chhoto ta age.`});
+  while(i<Lf.length||j<R.length){let v,src;if(j>=R.length||(i<Lf.length&&Lf[i]<=R[j])){v=Lf[i++];src='bam'}else{v=R[j++];src='daan'}a[k]=v;const x={};for(let q=lo;q<=k;q++)x[q]='swap';
+   P(F,{a,cls:rng(lo,hi,x),extra:`Baki: [${Lf.slice(i)}] + [${R.slice(j)}]`,cap:`${src} dik theke <b>${v}</b> nilam → index ${k}.`});k++}
+ })(0,n-1);
+ const c={};for(let k=0;k<n;k++)c[k]='done';P(F,{a,cls:c,cap:'Shob merge shesh — sorted! 🎉 O(n log n).'});return F}});
+VIZ.push({id:'quick',part:'p2',title:'⚡ Quick sort',blurb:'Ekta pivot nao; chhoto ra bam dike, boro ra daan dike. Protyek group-e abar. (Ekhane pivot = shesh item, in-place version.)',lg:['key','cmp','swap','done','dim'],render:rArr,frames(){
+ const a=[5,2,9,1,5,6],n=a.length,F=[],done=new Set();const mk=(lo,hi,x)=>{const c={};for(let k=0;k<n;k++){if(done.has(k))c[k]='done';else if(k<lo||k>hi)c[k]='dim'}return Object.assign(c,x||{})};
+ P(F,{a,cap:'Pivot bechhe nebo, tarpor baki der pivot-er du pashe bhag korbo.'});
+ (function qs(lo,hi){if(lo>hi)return;if(lo===hi){done.add(lo);P(F,{a,cls:mk(lo,hi),cap:`Ektai item (${a[lo]}) — already sorted.`});return}
+  const p=a[hi];let i=lo;P(F,{a,cls:mk(lo,hi,{[hi]:'key'}),cap:`Range [${a.slice(lo,hi+1)}]: pivot = <b>${p}</b>.`});
+  for(let j=lo;j<hi;j++){const sm=a[j]<p;P(F,{a,cls:mk(lo,hi,{[hi]:'key',[j]:'cmp'}),ptr:{[i]:'i'},cap:`${a[j]} &lt; ${p}? `+(sm?'Hya → bam group-e jabe.':'Na → daan dike-i thak.')});
+   if(sm){if(i!==j){[a[i],a[j]]=[a[j],a[i]];P(F,{a,cls:mk(lo,hi,{[hi]:'key',[i]:'swap',[j]:'swap'}),cap:`${a[i]} ke bam group-e shoralam.`})}i++}}
+  [a[i],a[hi]]=[a[hi],a[i]];done.add(i);P(F,{a,cls:mk(lo,hi),cap:`Pivot <b>${p}</b> tar final jaygay (index ${i}). Bam-e shob chhoto, daan-e shob boro/shoman.`});
+  qs(lo,i-1);qs(i+1,hi)})(0,n-1);
+ P(F,{a,cls:mk(0,n-1),cap:'Sorted! 🎉'});return F}});
+VIZ.push({id:'linkedlist',part:'p3',title:'🚂 Linked list',blurb:'Protyek node porer node-er thikana rakhe. Add/delete mane shudhu arrow bodlano.',lg:['swap','cmp','rej'],render:rList,frames(){
+ const F=[];let nodes=[];P(F,{nodes,cap:'Khali list: <code>head</code> → None.'});
+ [30,20,10].forEach(v=>{nodes=[{v,c:'swap'},...nodes.map(n=>({v:n.v}))];P(F,{nodes,cap:`<code>push_front(${v})</code>: notun node purono head-ke point kore, tarpor nije head hoye jay. O(1) — kichu shorate holo na.`})});
+ nodes=nodes.map(n=>({v:n.v}));
+ for(let i=0;i<nodes.length;i++){const ns=nodes.map((n,k)=>({v:n.v,c:k===i?'cmp':''}));if(nodes[i].v===20){P(F,{nodes:ns,cap:`<code>delete(20)</code>: 20 peye gechi. Age-r node (10) ke mone rekhechi.`});break}P(F,{nodes:ns,cap:`<code>delete(20)</code>: ${nodes[i].v} dekhchi — eta 20 noy, <code>next</code> dhore egoi.`})}
+ P(F,{nodes:nodes.map(n=>({v:n.v,c:n.v===20?'rej':''})),extra:'10 → <s>20</s> → 30',cap:'10-er <code>next</code> ebar shoja 30-ke point korbe. 20-ke ar keu point korche na.'});
+ P(F,{nodes:[{v:10},{v:30}],cap:'Delete shesh: head → 10 → 30 → None. Kono item shift korte hoyni. ✅'});return F}});
+VIZ.push({id:'stackqueue',part:'p3',title:'🍽️ Stack & Queue',blurb:'Stack = shesh-e dhuke age beroy (LIFO). Queue = age dhuke age beroy (FIFO).',lg:['cmp','key','seen'],render:rSQ,frames(){
+ const F=[],pairs={')':'(',']':'[','}':'{'};
+ const run=s=>{const st=[];P(F,{s,pos:-1,stack:st,cap:`Bracket check: <code>${s}</code>. Opening bracket → push; closing bracket → pop kore melao.`});
+  for(let i=0;i<s.length;i++){const ch=s[i];if('([{'.includes(ch)){st.push(ch);P(F,{s,pos:i,stack:st,cap:`<code>${ch}</code> opening → stack-e push.`})}
+   else{const top=st.pop();if(top!==pairs[ch]){P(F,{s,pos:i,pc:'swap',stack:st,cap:`<code>${ch}</code> closing → pop dilo <code>${top}</code>. Mile ni ❌ → <b>False</b> (balanced noy).`});return}
+    P(F,{s,pos:i,stack:st,cap:`<code>${ch}</code> closing → pop dilo <code>${top}</code>. Jora mile geche ✓`})}}
+  P(F,{s,pos:s.length,stack:st,cap:'Shesh-e stack khali → <b>True</b> (balanced) ✅'})};
+ run('{[()]}');run('([)]');
+ const q=[];P(F,{s:'ABC',pos:-1,stack:[],q,cap:'Ebar queue (phuchka-r line): pichone join, shamne theke serve.'});
+ [...'ABC'].forEach((x,i)=>{q.push(x);P(F,{s:'ABC',pos:i,stack:[],q,cap:`<code>append("${x}")</code> → ${x} line-er pichone daralo.`})});
+ ['A','B'].forEach(()=>{const x=q.shift();P(F,{s:'ABC',pos:3,stack:[],q,cap:`<code>popleft()</code> → <b>${x}</b> beriye gelo — je age esheche she-i age. FIFO ✅`})});
+ return F}});
+VIZ.push({id:'bst',part:'p3',title:'🌳 Binary search tree',blurb:'Chhoto → bam dike, boro → daan dike. Tarpor inorder traversal-e shob sorted beroy.',lg:['cmp','swap','done'],render:rTree,frames(){
+ const keys=[50,30,70,20,40,60,80],F=[],T={rank:{},depth:{},parent:{},left:{},right:{}};[...keys].sort((x,y)=>x-y).forEach((k,i)=>T.rank[k]=i);
+ const present=[];let root=null;
+ keys.forEach(k=>{if(root===null){root=k;T.depth[k]=0;T.parent[k]=null;present.push(k);P(F,{T,present,cls:{[k]:'swap'},cap:`${k} prothom, tai eta-i <b>root</b>.`});return}
+  let c=root,d=0;for(;;){const lf=k<c;P(F,{T,present,cls:{[c]:'cmp'},extra:`Inserting <b>${k}</b>`,cap:`${k} ${lf?'&lt;':'&gt;'} ${c} → ${lf?'bam':'daan'} dike jao.`});d++;const nx=lf?T.left[c]:T.right[c];
+   if(nx==null){if(lf)T.left[c]=k;else T.right[c]=k;T.parent[k]=c;T.depth[k]=d;present.push(k);P(F,{T,present,cls:{[k]:'swap'},cap:`Jayga khali → ${k} ekhane boshe gelo (${c}-er ${lf?'bam':'daan'} child).`});break}c=nx}});
+ const out=[],cls={};P(F,{T,present,cap:'Tree toiri. Ebar <b>inorder</b>: bam dal → node → daan dal.'});
+ (function io(k){if(k==null)return;io(T.left[k]);out.push(k);cls[k]='done';P(F,{T,present,cls,extra:`Inorder: <b>[${out.join(', ')}]</b>`,cap:`Visit ${k}. Tar bam dal already shesh.`});io(T.right[k])})(root);
+ P(F,{T,present,cls,extra:`Inorder: <b>[${out.join(', ')}]</b>`,cap:'Inorder traversal-e key gulo <b>sorted</b> beriye elo! 🎉'});return F}});
+VIZ.push({id:'recursion',part:'p4',title:'🪆 Recursion: factorial(4)',blurb:'Function nijeke chhoto problem-er jonno call kore; base case-e theme uttor upore phire ashe.',lg:['cmp','done'],render:rCalls,frames(){
+ const F=[],st=[];P(F,{stack:st,cap:'<code>factorial(4)</code> call korchi. Dekho call gulo kibhabe joma hoy.'});
+ for(let n=4;n>=1;n--){st.push({t:`factorial(${n}) = ${n} × factorial(${n-1}) …wait`,c:'cmp'});P(F,{stack:st,cap:`factorial(${n})-er dorkar factorial(${n-1}) — tai opekkha kore, notun call hoy.`})}
+ st.push({t:'factorial(0) = 1   ← base case',c:'done'});P(F,{stack:st,cap:'<b>Base case!</b> factorial(0) shoja 1 return kore. Ar kono call noy.'});
+ let v=1;for(let n=1;n<=4;n++){st.pop();const r=n*v;st[st.length-1]={t:`factorial(${n}) = ${n} × ${v} = ${r}`,c:'done'};P(F,{stack:st,cap:`Uttor upore phirche: factorial(${n}) = ${n} × ${v} = <b>${r}</b>.`});v=r}
+ P(F,{stack:st,cap:'Shesh: <b>factorial(4) = 24</b> 🎉 Call niche neme, uttor upore uthe elo.'});return F}});
+VIZ.push({id:'greedy',part:'p4',title:'🎬 Greedy: activity selection',blurb:'Ek ghore shobcheye beshi activity: je age shesh hoy sheta age nao.',lg:['cmp','done','rej'],render:rActs,frames(){
+ const acts=[[1,3],[2,5],[4,6],[6,8],[5,9],[8,10]],F=[],st=acts.map(()=>'');let last=0,cnt=0;
+ P(F,{acts,st,cap:'Activity gulo <b>finish time</b> onujayi sorted. Upor theke ek ek kore dekhbo.'});
+ acts.forEach(([s,e],i)=>{st[i]='cmp';P(F,{acts,st,extra:`Last finish = <b>${last}</b>`,cap:`(${s}, ${e}): shuru ${s}. Ager ta shesh hoyeche ${last}-e. ${s} ≥ ${last}?`});
+  if(s>=last){st[i]='done';last=e;cnt++;P(F,{acts,st,extra:`Last finish = <b>${last}</b> · chosen = <b>${cnt}</b>`,cap:`Hya → nilam ✓. Ekhon last finish = ${e}.`})}
+  else{st[i]='rej';P(F,{acts,st,extra:`Last finish = <b>${last}</b> · chosen = <b>${cnt}</b>`,cap:`Na → overlap korche, baad ✗.`})}});
+ P(F,{acts,st,extra:`chosen = <b>${cnt}</b>`,cap:`Total <b>${cnt} ta</b> activity — etai maximum. Age shesh howa ta nile porer der jonno beshi jayga thake. 🎉`});return F}});
+VIZ.push({id:'dp',part:'p4',title:'📝 DP: fewest coins',blurb:'Coins [4, 3, 1] diye 6 banate shobcheye kom koyta coin? dp[x] = x banate minimum coin.',lg:['cmp','key','done'],render:rArr,frames(){
+ const coins=[4,3,1],amt=6,F=[],dp=[0];for(let i=1;i<=amt;i++)dp.push(Infinity);const show=()=>dp.map(v=>v===Infinity?'∞':v);const mk=(x,o)=>{const c={};for(let k=0;k<x;k++)c[k]='done';return Object.assign(c,o||{})};
+ P(F,{a:show(),cls:{0:'done'},cap:'<code>dp[0] = 0</code> (0 banate kono coin lage na). Baki shob ∞ = ekhono jani na. Index = amount.'});
+ for(let x=1;x<=amt;x++){for(const c of coins){if(c>x)continue;const cand=dp[x-c]+1,better=cand<dp[x];
+   P(F,{a:show(),cls:mk(x,{[x]:'cmp',[x-c]:'key'}),extra:`dp[${x}]: coin <b>${c}</b> → dp[${x-c}] + 1 = <b>${cand}</b>`,cap:`${x} banate shesh coin jodi ${c} hoy: dp[${x-c}] + 1 = ${cand}. `+(better?'Ager cheye bhalo → rakhlam.':'Bhalo noy, baad.')});if(better)dp[x]=cand}
+  P(F,{a:show(),cls:mk(x+1),cap:`<code>dp[${x}] = ${dp[x]}</code> final.`})}
+ P(F,{a:show(),cls:mk(amt+1),cap:'<b>dp[6] = 2</b> (3 + 3). Greedy dito 4 + 1 + 1 = 3 coin — DP ashol best ta pelo. 🎉'});return F}});
+VIZ.push({id:'knapsack',part:'p4',title:'🎒 0/1 Knapsack',blurb:'5 kg bag. A (1 kg, 10) · B (2 kg, 15) · C (3 kg, 40). Protyek cell: leave na take — je ta boro.',lg:['cmp','key','done'],render:rGrid,frames(){
+ const wt=[1,2,3],val=[10,15,40],nm=['A','B','C'],cap=5,F=[],rows=['no item','+ A (1kg,10)','+ B (2kg,15)','+ C (3kg,40)'];const t=[Array(cap+1).fill(0)];for(let i=1;i<=3;i++)t.push(Array(cap+1).fill(null));
+ P(F,{t,rows,cap:'Row 0: kono item nei → shob 0. Cell-er mane: “ei porjonto item ar ei size-er bag diye best value”.'});
+ for(let i=1;i<=3;i++)for(let w=0;w<=cap;w++){const leave=t[i-1][w];let best=leave,from=[[i-1,w]],msg=`Leave ${nm[i-1]} → ${leave}.`;
+  if(wt[i-1]<=w){const take=val[i-1]+t[i-1][w-wt[i-1]];from.push([i-1,w-wt[i-1]]);msg+=` Take ${nm[i-1]} → ${val[i-1]} + ${t[i-1][w-wt[i-1]]} = ${take}.`;best=Math.max(leave,take)}else msg+=` ${nm[i-1]} dhore na (${wt[i-1]} kg &gt; ${w} kg).`;
+  t[i][w]=best;P(F,{t,rows,cur:[i,w],from,cap:`${msg} Boro ta = <b>${best}</b>.`})}
+ const pick=[];let w=cap;P(F,{t,rows,pick:[[3,5]],cap:'Best value = <b>55</b>. Ebar pichone hete dekhi kon item gulo neowa hoyeche.'});
+ for(let i=3;i>=1;i--){if(t[i][w]!==t[i-1][w]){pick.push([i,w]);P(F,{t,rows,pick,cur:[i-1,w],cap:`Row ${nm[i-1]}-e value bodleche (${t[i-1][w]} → ${t[i][w]}) → <b>${nm[i-1]} neowa hoyeche</b>. Baki jayga: ${w-wt[i-1]} kg.`});w-=wt[i-1]}
+  else P(F,{t,rows,pick,cur:[i-1,w],cap:`Row ${nm[i-1]}-e value eki (${t[i][w]}) → ${nm[i-1]} neowa hoyni.`})}
+ P(F,{t,rows,pick,cap:'Answer: <b>B + C = 15 + 40 = 55</b>, weight 5 kg. 🎉'});return F}});
+VIZ.push({id:'kmp',part:'p5',title:'🔍 KMP string search',blurb:'Mismatch hole pattern ta notun kore shuru na kore LPS table dekhe shamne lafiye jay. Text-er pointer kokhono pichone jay na.',lg:['cmp','done','swap'],render:rKmp,frames(){
+ const text='ABABABCABAB',pat='ABAB',lps=[0,0,1,2],F=[],hits=[];let k=0;const fr=(i,cur,st,cap)=>P(F,{text,pat,i,off:i-(cur<0?k-1:cur),k,cur,st,hits,cap});
+ P(F,{text,pat,i:-1,off:0,k:0,cur:-1,st:'',hits,cap:'Pattern <code>ABAB</code> ke text-er niche boshiye ek ek letter melabo.'});
+ for(let i=0;i<text.length;i++){const ch=text[i];
+  while(k&&ch!==pat[k]){fr(i,k,'swap',`text[${i}] = ${ch} ≠ pattern[${k}] = ${pat[k]}. Mismatch! ${k} ta letter already mile chilo → <code>k = lps[${k-1}] = ${lps[k-1]}</code>.`);k=lps[k-1];
+   fr(i,k,'cmp',`Pattern lafiye shore gelo; ${k} ta letter ekhono mile ache. Text-e pichone jai ni.`)}
+  if(ch===pat[k]){k++;P(F,{text,pat,i,off:i-k+1,k,cur:-1,st:'done',hits,cap:`text[${i}] = ${ch} mile geche ✓ (${k}/${pat.length}).`})}
+  else fr(i,0,'swap',`text[${i}] = ${ch} ≠ ${pat[0]}. Kichui mile ni → pattern ek ghor shamne.`);
+  if(k===pat.length){hits.push(i-k+1);P(F,{text,pat,i,off:i-k+1,k,cur:-1,st:'done',hits,cap:`Puro pattern mile geche! 🎯 Hit at index <b>${i-k+1}</b>. Tarpor <code>k = lps[3] = 2</code> — shesh “AB” ta abar kaaje lagbe.`});k=lps[k-1]}}
+ P(F,{text,pat,i:-1,off:7,k:0,cur:-1,st:'',hits,cap:'Shesh! Matches: <b>[0, 2, 7]</b>. Text-er protyek letter ekbar-i dekha holo → O(n + m). 🎉'});return F}});
+VIZ.push({id:'bfs',part:'p6',title:'🌊 BFS (breadth-first)',blurb:'Pukur-e dheu-er moto: age kacher shobai, tarpor dur-er. Queue use kore.',lg:['cur','seen','done'],render:rGraph(G1),frames(){
+ const F=[],n={},e={},q=['A'],order=[];n.A='seen';const side=()=>`Queue: <b>[${q.join(', ')}]</b><br>Order: <b>${order.join(' → ')||'—'}</b>`;
+ P(F,{n,e,side:side(),cap:'A theke shuru: A-ke queue-e rakhlam.'});
+ while(q.length){const u=q.shift();n[u]='cur';order.push(u);P(F,{n,e,side:side(),cap:`Queue-er shamne theke <b>${u}</b> ber korlam — visit ✓`});
+  for(const v of ADJ1[u]){if(!n[v]){n[v]='seen';e[ek(G1,u,v)]='tree';q.push(v);P(F,{n,e,side:side(),cap:`${u}-er protibeshi ${v} notun → queue-er pichone.`})}}
+  n[u]='done';}
+ P(F,{n,e,side:side(),cap:'BFS order: <b>A, B, C, D, E, F</b> — level by level. Tai unweighted graph-e shortest path dey. 🎉'});return F}});
+VIZ.push({id:'dfs',part:'p6',title:'🧶 DFS (depth-first)',blurb:'Ekta rasta dhore shesh porjonto jao, bondho hole phire eshe porer rasta. Stack/recursion use kore.',lg:['cur','done'],render:rGraph(G1),frames(){
+ const F=[],n={},e={},path=[],order=[];const side=()=>`Call stack: <b>[${path.join(', ')}]</b><br>Order: <b>${order.join(' → ')||'—'}</b>`;
+ P(F,{n,e,side:side(),cap:'A theke shuru. Jotodur jaowa jay, bhitore dhukbo.'});
+ (function go(u){path.push(u);order.push(u);n[u]='cur';P(F,{n,e,side:side(),cap:`<b>${u}</b> visit ✓ — ebar er prothom notun protibeshi-r dike.`});
+  for(const v of ADJ1[u]){if(!n[v]){e[ek(G1,u,v)]='tree';go(v);n[u]='cur';P(F,{n,e,side:side(),cap:`${v} theke phire elam <b>${u}</b>-te (backtrack). Ar kono notun protibeshi?`})}}
+  n[u]='done';path.pop()})('A');
+ P(F,{n,e,side:side(),cap:'DFS order: <b>A, B, D, E, F, C</b> — age gobhire, pore pichiye. 🎉'});return F}});
+VIZ.push({id:'dijkstra',part:'p6',title:'📍 Dijkstra shortest path',blurb:'A theke shob jaygar shosta rasta. Bar bar shobcheye kacher jayga nao, tar protibeshi der distance update (relax) koro.',lg:['cur','cmp','done'],render:rGraph(G2),frames(){
+ const adj={};G2.edges.forEach(([u,v,w])=>{(adj[u]=adj[u]||[]).push([v,w]);(adj[v]=adj[v]||[]).push([u,w])});
+ const F=[],n={},e={},dist={},prev={},lab={};Object.keys(G2.pos).forEach(v=>{dist[v]=Infinity;lab[v]='∞'});dist.A=0;lab.A=0;let pq=[[0,'A']];
+ const side=()=>`Heap: <b>${pq.map(p=>`(${p[0]}, ${p[1]})`).join(' ')||'khali'}</b>`;const clr=()=>{Object.keys(e).forEach(k=>{if(e[k]==='cmp')delete e[k]})};
+ P(F,{n,e,lab,side:side(),cap:'Node-er upor-er number = ekhon porjonto jana best distance. A = 0, baki ∞.'});
+ while(pq.length){pq.sort((x,y)=>x[0]-y[0]||(x[1]<y[1]?-1:1));const [d,u]=pq.shift();
+  if(d>dist[u]){P(F,{n,e,lab,side:side(),cap:`Heap theke (${d}, ${u}) — kintu ${u}-er best already ${dist[u]}. Purono entry → skip.`});continue}
+  n[u]='cur';P(F,{n,e,lab,side:side(),cap:`Shobcheye kacher: <b>${u}</b> (distance ${d}). Er distance final.`});
+  for(const [v,w] of adj[u]){if(n[v]==='done')continue;clr();e[ek(G2,u,v)]='cmp';const nd=d+w,better=nd<dist[v];
+   if(better){const old=dist[v]===Infinity?'∞':dist[v];dist[v]=nd;prev[v]=u;lab[v]=nd;pq.push([nd,v])}
+   P(F,{n,e,lab,side:side(),cap:`${u} → ${v}: ${d} + ${w} = ${nd}. `+(better?`Ager cheye kom → <b>update ✓</b>`:`${dist[v]}-er cheye bhalo noy → thak.`)})}
+  clr();n[u]='done'}
+ let t='F';const path=[t];while(prev[t]){e[ek(G2,prev[t],t)]='tree';t=prev[t];path.unshift(t)}
+ P(F,{n,e,lab,side:`Path to F: <b>${path.join(' → ')}</b> = 13`,cap:'Shob distance final. F-e jawar shosta rasta: <b>A → C → B → D → E → F = 13</b> 🎉'});return F}});
+VIZ.push({id:'kruskal',part:'p6',title:'🔌 Kruskal MST',blurb:'Shob gram joro shobcheye kom khoroch-e: shosta edge age, loop hole baad.',lg:['cmp','done','rej'],render:rGraph(G3),frames(){
+ const F=[],n={},e={},par={};const find=x=>{if(par[x]==null)par[x]=x;return par[x]===x?x:(par[x]=find(par[x]))};let total=0,cnt=0;
+ const es=[...G3.edges].sort((a,b)=>a[2]-b[2]||(a[0]+a[1]<b[0]+b[1]?-1:1));const side=()=>`MST edges: <b>${cnt}</b> / 4 · total cost = <b>${total}</b>`;
+ P(F,{n,e,side:'Sorted: '+es.map(x=>`${x[0]}–${x[1]} ${x[2]}`).join(', '),cap:'Age shob edge weight onujayi sort. Tarpor shosta theke ek ek kore dekhbo.'});
+ for(const [u,v,w] of es){const k=u+'-'+v,ra=find(u),rb=find(v);e[k]='cmp';P(F,{n,e,side:side(),cap:`Edge ${u}–${v} (${w}): ${u} ar ${v} ki already connected?`});
+  if(ra!==rb){par[ra]=rb;e[k]='tree';n[u]='done';n[v]='done';total+=w;cnt++;P(F,{n,e,side:side(),cap:`Na → nilam ✓ (<code>union</code>). Total = ${total}.`})}
+  else{e[k]='rej';P(F,{n,e,side:side(),cap:`Hya → eta nile <b>loop</b> hobe. Baad ✗`})}}
+ P(F,{n,e,side:side(),cap:'MST toiri: 5 gram, <b>4 ta edge</b> (V − 1), total <b>10</b>. 🎉'});return F}});
+VIZ.push({id:'topo',part:'p6',title:'🧦 Topological sort (Kahn)',blurb:'Prerequisite age. Node-er upor-er number = koyta prerequisite ekhono baki (in-degree).',lg:['seen','cur','done'],render:rGraph(G4),frames(){
+ const F=[],n={},e={},lab={},adj={};Object.keys(G4.pos).forEach(v=>{lab[v]=0;adj[v]=[]});G4.edges.forEach(([u,v])=>{adj[u].push(v);lab[v]++});
+ const q=[],order=[];const side=()=>`Ready queue: <b>[${q.join(', ')}]</b><br>Order: <b>${order.join(' → ')||'—'}</b>`;
+ P(F,{n,e,lab,side:side(),cap:'Protyek course-er in-degree gunlam: koyta arrow tar dike ashche.'});
+ Object.keys(G4.pos).forEach(v=>{if(lab[v]===0){q.push(v);n[v]='seen'}});P(F,{n,e,lab,side:side(),cap:'In-degree 0 mane kono prerequisite nei → ekhon-i neowa jay. Queue-e rakhlam.'});
+ while(q.length){const u=q.shift();n[u]='cur';order.push(u);P(F,{n,e,lab,side:side(),cap:`<b>${u}</b> korlam ✓`});
+  for(const v of adj[u]){lab[v]--;e[u+'-'+v]='tree';const z=lab[v]===0;if(z){q.push(v);n[v]='seen'}P(F,{n,e,lab,side:side(),cap:`${v}-er ekta prerequisite kome gelo → baki ${lab[v]}. `+(z?'Ebar ready → queue-e.':'Ekhono opekkha.')})}
+  n[u]='done'}
+ P(F,{n,e,lab,side:side(),cap:'Shob 5 ta course order-e ache → kono cycle nei. Jodi kichu baki thakto, mane loop chilo. 🎉'});return F}});
+
+/* ---------- player ---------- */
+if(typeof document!=='undefined'){
+ const $=s=>document.querySelector(s);let cur=0,step=0,frames=[],timer=null;
+ const nav=$('#nav');PARTS.forEach(([pid,name])=>{const g=document.createElement('div');g.className='grp';g.innerHTML=`<b>${name}</b>`;VIZ.forEach((v,i)=>{if(v.part!==pid)return;const b=document.createElement('button');b.className='chipb';b.textContent=v.title;b.dataset.i=i;b.onclick=()=>load(i);g.appendChild(b)});nav.appendChild(g)});
+ function show(){const v=VIZ[cur],f=frames[step];$('#stage').innerHTML=f.slide?rSlide(f):v.render(f);$('#tag').textContent=f.tag||'';$('#cap').innerHTML=f.cap;$('#count').textContent=`${step+1} / ${frames.length}`;$('#prog').style.width=(100*(step+1)/frames.length)+'%';try{history.replaceState(null,'','#'+v.id+'/'+(step+1))}catch(_){}}
+ function stop(){clearTimeout(timer);timer=null;$('#bPlay').textContent='▶ Play'}
+ function play(){if(step>=frames.length-1)step=0;show();$('#bPlay').textContent='⏸ Pause';const tick=()=>{const f=frames[step],len=((f.t||'')+f.cap).replace(/<[^>]+>/g,'').length;timer=setTimeout(()=>{if(step<frames.length-1){step++;show();tick()}else stop()},(1500+42*len)/(+$('#speed').value))};tick()}
+ function load(i,s){stop();cur=i;const v=VIZ[i];frames=lessonFrames(v);step=Math.max(0,Math.min((s||1)-1,frames.length-1));$('#title').textContent=v.title;$('#blurb').textContent=v.blurb;
+  $('#legend').innerHTML=v.lg.map(k=>`<span class="lg ${L[k][0]}"${k==='dim'?' style="opacity:.5"':''}>${L[k][1]}</span>`).join('');
+  document.querySelectorAll('.chipb').forEach(b=>{const on=+b.dataset.i===i;b.classList.toggle('on',on);if(on&&nav.scrollWidth>nav.clientWidth)nav.scrollLeft=b.offsetLeft-nav.offsetLeft-nav.clientWidth/2+b.offsetWidth/2});show()}
+ $('#bPlay').onclick=()=>timer?stop():play();
+ $('#bNext').onclick=()=>{stop();if(step<frames.length-1){step++;show()}};
+ $('#bPrev').onclick=()=>{stop();if(step>0){step--;show()}};
+ $('#bRestart').onclick=()=>{stop();step=0;show()};
+ $('#speed').oninput=()=>{if(timer){stop();play()}};
+ document.addEventListener('keydown',ev=>{if(ev.target.tagName==='INPUT')return;if(ev.key==='ArrowRight')$('#bNext').click();else if(ev.key==='ArrowLeft')$('#bPrev').click();else if(ev.key===' '){ev.preventDefault();$('#bPlay').click()}});
+ const m=(location.hash||'').slice(1).split('/');const idx=VIZ.findIndex(v=>v.id===m[0]);load(idx<0?0:idx,+m[1]||1);
+}
+if(typeof module!=='undefined')module.exports={VIZ};
+</script>
+</body>
+</html>
